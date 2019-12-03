@@ -41,7 +41,6 @@ func getJWT() string {
 	if err != nil {
 		fmt.Println(err)
 	}
-	//req.Header.Set("Authorization", "Basic bWlrZTJAb25saS5vbmU6U2FtcGxlUGFzczEy")
 	res, err := client.Do(req)
 	defer res.Body.Close()
 	body, err := ioutil.ReadAll(res.Body)
