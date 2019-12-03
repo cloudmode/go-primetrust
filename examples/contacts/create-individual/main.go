@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/BANKEX/go-primetrust"
-	"github.com/BANKEX/go-primetrust/models"
+	"github.com/CLOUDMODE/go-primetrust"
+	"github.com/CLOUDMODE/go-primetrust/models"
 	"log"
 	"os"
 )

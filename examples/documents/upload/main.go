@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/BANKEX/go-primetrust"
+	"github.com/CLOUDMODE/go-primetrust"
 	"log"
 	"mime/multipart"
 	"net/textproto"

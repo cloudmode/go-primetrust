@@ -5,15 +5,16 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/BANKEX/go-primetrust/models"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/CLOUDMODE/go-primetrust/models"
 )
 
 func GetContacts() (*models.ContactsResponse, error) {
 	apiUrl := fmt.Sprintf("%s/contacts", _apiPrefix)
 	req, err := http.NewRequest("GET", apiUrl, nil)
-	req.Header.Add("Authorization", _authHeader)
+	req.Header.Add("Authorization", _jwt)
 
 	client := &http.Client{}
 	res, err := client.Do(req)
@@ -38,7 +39,7 @@ func GetContacts() (*models.ContactsResponse, error) {
 func GetContact(contactId string) (*models.Contact, error) {
 	apiUrl := fmt.Sprintf("%s/contacts/%s", _apiPrefix, contactId)
 	req, err := http.NewRequest("GET", apiUrl, nil)
-	req.Header.Add("Authorization", _authHeader)
+	req.Header.Add("Authorization", _jwt)
 
 	client := &http.Client{}
 	res, err := client.Do(req)
@@ -67,7 +68,7 @@ func CreateNewContact(contact *models.Contact) (*models.Contact, error) {
 	apiUrl := fmt.Sprintf("%s/contacts", _apiPrefix)
 	req, err := http.NewRequest("POST", apiUrl, jsonData)
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Add("Authorization", _authHeader)
+	req.Header.Add("Authorization", _jwt)
 
 	client := &http.Client{}
 	res, err := client.Do(req)

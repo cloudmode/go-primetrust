@@ -4,15 +4,16 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/BANKEX/go-primetrust/models"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/CLOUDMODE/go-primetrust/models"
 )
 
 func GetAccounts() (*models.AccountsResponse, error) {
 	apiUrl := fmt.Sprintf("%s/accounts", _apiPrefix)
 	req, err := http.NewRequest("GET", apiUrl, nil)
-	req.Header.Add("Authorization", _authHeader)
+	req.Header.Add("Authorization", _jwt)
 
 	client := &http.Client{}
 	res, err := client.Do(req)
@@ -37,7 +38,7 @@ func GetAccounts() (*models.AccountsResponse, error) {
 func GetAccount(accountId string) (*models.Account, error) {
 	apiUrl := fmt.Sprintf("%s/accounts/%s", _apiPrefix, accountId)
 	req, err := http.NewRequest("GET", apiUrl, nil)
-	req.Header.Add("Authorization", _authHeader)
+	req.Header.Add("Authorization", _jwt)
 
 	client := &http.Client{}
 	res, err := client.Do(req)

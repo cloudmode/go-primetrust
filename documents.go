@@ -5,13 +5,14 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/BANKEX/go-primetrust/models"
 	"io"
 	"io/ioutil"
 	"log"
 	"mime/multipart"
 	"net/http"
 	"path"
+
+	"github.com/CLOUDMODE/go-primetrust/models"
 )
 
 func UploadDocument(file multipart.File, fileHeader multipart.FileHeader, contactId string, label string, description string) (*models.DocumentResponse, error) {
@@ -50,7 +51,7 @@ func UploadDocument(file multipart.File, fileHeader multipart.FileHeader, contac
 
 	req, err := http.NewRequest("POST", apiUrl, body)
 	req.Header.Set("Content-Type", writer.FormDataContentType())
-	req.Header.Add("Authorization", _authHeader)
+	req.Header.Add("Authorization", _jwt)
 
 	client := &http.Client{}
 

@@ -1,4 +1,4 @@
-module github.com/BANKEX/go-primetrust
+module github.com/CLOUDMODE/go-primetrust
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect

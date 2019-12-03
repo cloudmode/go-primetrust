@@ -4,15 +4,16 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/BANKEX/go-primetrust/models"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/CLOUDMODE/go-primetrust/models"
 )
 
 func GetCashTransactions() (*models.CashTransactionsResponse, error) {
 	apiUrl := fmt.Sprintf("%s/cash-transactions", _apiPrefix)
 	req, err := http.NewRequest("GET", apiUrl, nil)
-	req.Header.Add("Authorization", _authHeader)
+	req.Header.Add("Authorization", _jwt)
 
 	client := &http.Client{}
 	res, err := client.Do(req)
