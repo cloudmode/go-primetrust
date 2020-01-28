@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/CLOUDMODE/go-primetrust"
+	"github.com/cloudmode/go-primetrust"
 	"log"
 	"mime/multipart"
 	"net/textproto"

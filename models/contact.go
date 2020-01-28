@@ -16,23 +16,23 @@ const (
 
 type ContactAttributes struct {
 	ID                 string               `json:"id,omitempty"`
-	Type               string               `json:"type"`
-	AccountID          string               `json:"account-id"`
-	AccountRoles       []string             `json:"account-roles"`
+	Type               string               `json:"type,omitempty"`
+	AccountID          string               `json:"account-id,omitempty"`
+	AccountRoles       []string             `json:"account-roles,omitempty"`
 	ContactType        string               `json:"contact-type,omitempty"`
-	AMLCleared         bool                 `json:"aml-cleared"`
-	CIPCleared         bool                 `json:"cip-cleared"`
+	AMLCleared         bool                 `json:"aml-cleared,omitempty"`
+	CIPCleared         bool                 `json:"cip-cleared,omitempty"`
 	DateOfBirth        string               `json:"date-of-birth,omitempty"`
-	Email              string               `json:"email"`
-	Name               string               `json:"name"`
+	Email              string               `json:"email,omitempty"`
+	Name               string               `json:"name,omitempty"`
 	Sex                string               `json:"sex,omitempty"`
 	Label              string               `json:"label,omitempty"`
 	RegionOfFormation  string               `json:"region-of-formation,omitempty"`
-	TaxIDNumber        string               `json:"tax-id-number"`
-	TaxCountry         string               `json:"tax-country"`
+	TaxIDNumber        string               `json:"tax-id-number,omitempty"`
+	TaxCountry         string               `json:"tax-country,omitempty"`
 	TaxState           string               `json:"tax-state,omitempty"`
-	PrimaryAddress     Address              `json:"primary-address"`
-	PrimaryPhoneNumber PhoneNumber          `json:"primary-phone-number"`
+	PrimaryAddress     Address              `json:"primary-address,omitempty"`
+	PrimaryPhoneNumber PhoneNumber          `json:"primary-phone-number,omitempty"`
 	RelatedContacts    []RelatedContactData `json:"related-contacts,omitempty"`
 }
 
@@ -46,6 +46,7 @@ type ContactData struct {
 
 type RelatedContactData struct {
 	Type               string      `json:"type"`
+	ContactType        string      `json:"contact-type,omitempty"`
 	DateOfBirth        string      `json:"date-of-birth"`
 	Email              string      `json:"email"`
 	Name               string      `json:"name"`

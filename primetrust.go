@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/fatih/color"
 )
 
 const (
@@ -19,8 +21,9 @@ var _authHeader string
 var _jwt string
 
 func basicAuth(username string, password string) string {
-	auth := username + ":" + password
-	return base64.StdEncoding.EncodeToString([]byte(auth))
+	auth := base64.StdEncoding.EncodeToString([]byte(username + ":" + password))
+	color.Blue("basicAuth:%v", auth)
+	return auth
 }
 
 type JWT struct {
@@ -51,7 +54,9 @@ func getJWT() string {
 		fmt.Println("primetrust.init().getJWT error parsing body:", err)
 		return ""
 	}
-	return fmt.Sprintf("Bearer %s", jwt.Token)
+	bearer := fmt.Sprintf("Bearer %s", jwt.Token)
+	color.Blue("%s", bearer)
+	return bearer
 }
 
 func Init(sandbox bool, login string, password string) {

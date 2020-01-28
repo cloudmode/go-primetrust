@@ -3,10 +3,10 @@ package models
 type AccountTypeAttributes struct {
 	Description          string   `json:"description"`
 	Label                string   `json:"label"`
-	ManageInvestments    bool     `json:"manage-investments"`
-	OwnerRole            string   `json:"owner-role"`
-	StatementRoles       []string `json:"statement-roles"`
-	TaxFormRecipientRole string   `json:"tax-form-recipient-role"`
+	ManageInvestments    bool     `json:"manage-investments" bson:"manage-investments"`
+	OwnerRole            string   `json:"owner-role" bson:"owner-role"`
+	StatementRoles       []string `json:"statement-roles" bson:"statement-roles"`
+	TaxFormRecipientRole string   `json:"tax-form-recipient-role" bson:"tax-form-recipient"`
 	Trust                bool     `json:"trust"`
 }
 

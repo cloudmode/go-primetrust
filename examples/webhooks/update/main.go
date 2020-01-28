@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/CLOUDMODE/go-primetrust"
-	"github.com/CLOUDMODE/go-primetrust/models"
+	"github.com/cloudmode/go-primetrust"
+	"github.com/cloudmode/go-primetrust/models"
 	"log"
 	"os"
 )

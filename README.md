@@ -25,7 +25,7 @@ Please specify appropriate variables when running examples according to source c
 package main
 
 import (
-	"github.com/CLOUDMODE/go-primetrust"
+	"github.com/cloudmode/go-primetrust"
 	"log"
 	"os"
 )

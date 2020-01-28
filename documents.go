@@ -12,10 +12,11 @@ import (
 	"net/http"
 	"path"
 
-	"github.com/CLOUDMODE/go-primetrust/models"
+	"github.com/cloudmode/go-primetrust/models"
+	"github.com/globalsign/mgo"
 )
 
-func UploadDocument(file multipart.File, fileHeader multipart.FileHeader, contactId string, label string, description string) (*models.DocumentResponse, error) {
+func UploadDocument(file *mgo.GridFile, fileHeader multipart.FileHeader, contactId string, label string, description string) (*models.DocumentResponse, error) {
 	apiUrl := fmt.Sprintf("%s/uploaded-documents", _apiPrefix)
 
 	filename := fileHeader.Filename

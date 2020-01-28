@@ -8,7 +8,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/CLOUDMODE/go-primetrust/models"
+	"github.com/cloudmode/go-primetrust/models"
 )
 
 func GetContacts() (*models.ContactsResponse, error) {
