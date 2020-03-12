@@ -124,3 +124,62 @@ func CreateNewAccount(account *models.AccountForm) (*models.Account, error) {
 
 	return &response, nil
 }
+
+func GetAgreement(agreementId string) (*models.Agreement, error) {
+	apiUrl := fmt.Sprintf("%s/agreements/%s", _apiPrefix, agreementId)
+	req, err := http.NewRequest("GET", apiUrl, nil)
+	req.Header.Add("Authorization", _jwt)
+	client := &http.Client{}
+	res, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer res.Body.Close()
+
+	if res.StatusCode != http.StatusOK {
+		return nil, errors.New(res.Status)
+	}
+	body, _ := ioutil.ReadAll(res.Body)
+
+	response := models.Agreement{}
+	if err := json.Unmarshal(body, &response); err != nil {
+		return nil, errors.New("unmarshal error")
+	}
+	color.Red("GetAgreement:%v, %+v", apiUrl, response)
+	return &response, nil
+}
+
+func GetAgreementPreview(inputs *models.AgreementForm) (*models.Agreement, error) {
+	jsonData := new(bytes.Buffer)
+	json.NewEncoder(jsonData).Encode(inputs)
+
+	apiUrl := fmt.Sprintf("%s/agreement-previews", _apiPrefix)
+
+	req, err := http.NewRequest("POST", apiUrl, jsonData)
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Add("Authorization", _jwt)
+
+	client := &http.Client{}
+	res, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer res.Body.Close()
+
+	body, _ := ioutil.ReadAll(res.Body)
+
+	if res.StatusCode != http.StatusCreated {
+		return nil, errors.New(fmt.Sprintf("%s: %s", res.Status, string(body)))
+	}
+
+	response := models.Agreement{}
+
+	if err := json.Unmarshal(body, &response); err != nil {
+		color.Black("%v", string(body))
+		return nil, err
+	}
+
+	// color.Red("GetAgreementPreview:response:%+v", response)
+
+	return &response, nil
+}

@@ -16,7 +16,7 @@ func GetCipCheck(contactId string) (*models.CipCheck, error) {
 	req, err := http.NewRequest("GET", apiUrl, nil)
 	req.Header.Add("Authorization", _jwt)
 
-	color.Red("GetCipCheck apiUrl:$v", apiUrl)
+	color.Red("GetCipCheck apiUrl:%v", apiUrl)
 
 	client := &http.Client{}
 	res, err := client.Do(req)
