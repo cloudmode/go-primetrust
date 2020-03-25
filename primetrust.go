@@ -22,7 +22,6 @@ var _jwt string
 
 func basicAuth(username string, password string) string {
 	auth := base64.StdEncoding.EncodeToString([]byte(username + ":" + password))
-	color.Blue("basicAuth:%v", auth)
 	return auth
 }
 
@@ -54,8 +53,12 @@ func getJWT() string {
 		fmt.Println("primetrust.init().getJWT error parsing body:", err)
 		return ""
 	}
-	bearer := fmt.Sprintf("Bearer %s", jwt.Token)
-	color.Blue("%s", bearer)
+	if len(jwt.Token) == 0 {
+		fmt.Println("error creating JWT")
+		panic(0)
+	}
+	bearer := fmt.Sprintf("Bearer %+v", jwt.Token)
+
 	return bearer
 }
 
@@ -66,5 +69,7 @@ func Init(sandbox bool, login string, password string) {
 		_apiPrefix = ProductionAPIPrefix
 	}
 	_authHeader = fmt.Sprintf("Basic %s", basicAuth(login, password))
+	color.Blue("%s", _authHeader)
 	_jwt = getJWT()
+	color.Blue("%s", _jwt)
 }

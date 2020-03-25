@@ -183,3 +183,59 @@ func GetAgreementPreview(inputs *models.AgreementForm) (*models.Agreement, error
 
 	return &response, nil
 }
+
+func SandboxAccountOpen(accountId string) (*models.AccountData, error) {
+	apiUrl := fmt.Sprintf("%s/accounts/%s/sandbox/open", _apiPrefix, accountId)
+	req, err := http.NewRequest("POST", apiUrl, nil)
+	req.Header.Add("Authorization", _jwt)
+
+	client := &http.Client{}
+	res, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer res.Body.Close()
+
+	if res.StatusCode != http.StatusOK {
+		return nil, errors.New(res.Status)
+	}
+	body, _ := ioutil.ReadAll(res.Body)
+
+	response := models.AccountData{}
+	if err := json.Unmarshal(body, &response); err != nil {
+		return nil, errors.New("unmarshal error")
+	}
+
+	return &response, nil
+}
+
+func SandboxAccountFund(accountId string, amount int) (*models.CashTransaction, error) {
+	cash := models.CashTransaction{}
+	cash.Data.Type = "accounts"
+	cash.Data.Attributes.Amount = float64(amount)
+	jsonData := new(bytes.Buffer)
+	json.NewEncoder(jsonData).Encode(cash)
+
+	apiUrl := fmt.Sprintf("%s/accounts/%s/sandbox/fund", _apiPrefix, accountId)
+	req, err := http.NewRequest("POST", apiUrl, jsonData)
+	req.Header.Add("Authorization", _jwt)
+
+	client := &http.Client{}
+	res, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer res.Body.Close()
+
+	if res.StatusCode != http.StatusOK {
+		return nil, errors.New(res.Status)
+	}
+	body, _ := ioutil.ReadAll(res.Body)
+
+	response := models.CashTransaction{}
+	if err := json.Unmarshal(body, &response); err != nil {
+		return nil, errors.New("unmarshal error")
+	}
+
+	return &response, nil
+}
