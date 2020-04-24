@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"time"
 
 	"github.com/fatih/color"
 )
@@ -72,4 +73,15 @@ func Init(sandbox bool, login string, password string) {
 	color.Blue("%s", _authHeader)
 	_jwt = getJWT()
 	color.Blue("%s", _jwt)
+
+	// periodically update JWT
+	go func() {
+		jwtTicker := time.NewTicker(1 * time.Hour)
+		for {
+			select {
+			case <-jwtTicker.C:
+				_jwt = getJWT()
+			}
+		}
+	}()
 }
