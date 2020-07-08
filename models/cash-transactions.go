@@ -5,20 +5,17 @@ import (
 )
 
 type CashTransactionAttributes struct {
-	ID                      string    `json:"id,omitempty"`
-	ActualSettlementDate    string    `json:"actual-settlement-date"`
-	Amount                  float64   `json:"amount"`
-	CommentsLine1           string    `json:"comments-line-1" bson:"comments-line-1"`
-	CommentsLine2           string    `json:"comments-line-2" bson:"comments-line-2"`
-	CommentsLine3           string    `json:"comments-line-3" bson:"comments-line-3"`
-	CommentsLine4           string    `json:"comments-line-4" bson:"comments-line-4"`
-	CreatedAt               time.Time `json:"actual-settlement-date"  bson:"actual-settlement-date"`
-	Currency                string    `json:"currency"`
-	CustomerReference       string    `json:"customer-reference" bson:"customer-reference"`
-	EffectiveSettlementDate string    `json:"effective-settlement-date"  bson:"effective-settlement-date"`
-	SettlementDate          string    `json:"settlement-date"`
-	TradeDate               string    `json:"trade-date"  bson:"trade-date"`
-	TransactionNumber       int       `json:"transaction-number" bson:"transaction-number"`
+	ID                string    `json:"id,omitempty"`
+	Amount            float64   `json:"amount"`
+	Comments1         string    `json:"comments-1" bson:"comments-1"`
+	Comments2         string    `json:"comments-2" bson:"comments-2"`
+	Comments3         string    `json:"comments-3" bson:"comments-3"`
+	Comments4         string    `json:"comments-4" bson:"comments-4"`
+	CreatedAt         time.Time `json:"created-at"  bson:"created-at"`
+	CurrencyType      string    `json:"currency-type"`
+	CustomerReference string    `json:"customer-reference" bson:"customer-reference"`
+	EffectiveAt       time.Time `json:"effective-at"  bson:"effective-at"`
+	SettledOn         string    `json:"settled-on"`
 }
 
 type CashTransactionData struct {
@@ -27,6 +24,16 @@ type CashTransactionData struct {
 	Attributes    CashTransactionAttributes `json:"attributes"`
 	Links         Links                     `json:"links"`
 	Relationships Relationships             `json:"relationships"`
+	Included      interface{}               `json:"included"`
+}
+
+type CashTransactionDataNoExtra struct {
+	ID         string                    `json:"id,omitempty"`
+	Type       string                    `json:"type"`
+	Attributes CashTransactionAttributes `json:"attributes"`
+	//Links         Links                     `json:"links"`
+	//Relationships Relationships             `json:"relationships"`
+	//Included      interface{}               `json:"included"`
 }
 
 type CashTransaction struct {
@@ -35,5 +42,23 @@ type CashTransaction struct {
 
 type CashTransactionsResponse struct {
 	CollectionResponse
-	Data []CashTransaction `json:"data"`
+	Data     []CashTransactionDataNoExtra `json:"data"`
+	Included []CashTransferDataNoExtra    `json:"included"`
+}
+
+type FundTransfer struct {
+	Data FundTransferData `json:"data"`
+}
+
+type FundTransferData struct {
+	Type       string                 `json:"type"`
+	Attributes FundTransferAttributes `json:"attributes"`
+}
+
+type FundTransferAttributes struct {
+	FromAccountID string  `json:"from-account-id,omitempty"`
+	ToAccountID   string  `json:"to-account-id,omitempty"`
+	Amount        float64 `json:"amount"`
+	CurrencyType  string  `json:"currency-type"`
+	Reference     string  `json:"reference"`
 }

@@ -39,6 +39,7 @@ func GetAccounts() (*models.AccountsResponse, error) {
 
 func GetAccount(accountId string) (*models.Account, error) {
 	apiUrl := fmt.Sprintf("%s/accounts/%s?include=contacts", _apiPrefix, accountId)
+	color.Green("GetAccount:%v", apiUrl)
 	req, err := http.NewRequest("GET", apiUrl, nil)
 	req.Header.Add("Authorization", _jwt)
 
@@ -78,7 +79,7 @@ func GetCashTotals(accountId string) (*models.CashTotal, error) {
 		return nil, errors.New(res.Status)
 	}
 	body, _ := ioutil.ReadAll(res.Body)
-	color.Red("GetCashTotals:body:%v", string(body))
+	//color.Red("GetCashTotals:body:%v", string(body))
 
 	response := models.CashTotal{}
 	if err := json.Unmarshal(body, &response); err != nil {

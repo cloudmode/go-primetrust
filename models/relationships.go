@@ -55,5 +55,7 @@ type Relationships struct {
 	OwnersAndGrantors              Relationship  `json:"owners-and-grantors,omitempty"`
 	FundsTransfers                 Relationship  `json:"funds-transfers,omitempty"`
 	Organization                   Relationship  `json:"organization,omitempty"`
+	FromCashTransaction            Relationship2 `json:"from-cash-transaction,omitempty"`
+	ToCashTransaction              Relationship2 `json:"to-cash-transaction,omitempty"`
 	WebhookConfig                  Relationship2 `json:"webhook-config,omitempty"`
 }
