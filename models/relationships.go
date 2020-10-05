@@ -17,7 +17,7 @@ type Relationship2 struct {
 
 type Relationships struct {
 	Accounts                       Relationship  `json:"accounts,omitempty"`
-	Account                        Relationship  `json:"account,omitempty"`
+	Account                        Relationship2 `json:"account,omitempty"`
 	Contacts                       Relationship  `json:"contacts,omitempty"`
 	Contact                        Relationship  `json:"contact,omitempty"`
 	AccountType                    Relationship2 `json:"account-type,omitempty"`
@@ -26,9 +26,10 @@ type Relationships struct {
 	CIPChecks                      Relationship  `json:"cip-checks,omitempty"`
 	Contributions                  Relationship  `json:"contributions,omitempty"`
 	Currency                       Relationship  `json:"currency,omitempty"`
-	Disbursements                  Relationship  `json:"disbursements,omitempty"`
+	Disbursement                   Relationship2 `json:"disbursement,omitempty"`
+	DisbursementAuthorization      Relationship2 `json:"disbursement-authorization,omitempty"`
 	FromContactRelationships       Relationship  `json:"from-contact-relationships,omitempty"`
-	PaymentMethods                 Relationship  `json:"payment-methods,omitempty"`
+	PaymentMethod                  Relationship2 `json:"payment-method,omitempty"`
 	PhoneNumbers                   Relationship  `json:"phone-numbers,omitempty"`
 	UploadedDocuments              Relationship  `json:"uploaded-documents,omitempty"`
 	RelatedFromContacts            Relationship  `json:"related-from-contacts,omitempty"`
@@ -53,9 +54,14 @@ type Relationships struct {
 	Beneficiaries                  Relationship  `json:"beneficiaries,omitempty"`
 	Grantors                       Relationship  `json:"grantors,omitempty"`
 	OwnersAndGrantors              Relationship  `json:"owners-and-grantors,omitempty"`
-	FundsTransfers                 Relationship  `json:"funds-transfers,omitempty"`
+	FundsTransfer                  Relationship2 `json:"funds-transfer,omitempty"`
+	FundsTransferMethod            Relationship2 `json:"funds-transfer-method,omitempty"`
 	Organization                   Relationship  `json:"organization,omitempty"`
 	FromCashTransaction            Relationship2 `json:"from-cash-transaction,omitempty"`
 	ToCashTransaction              Relationship2 `json:"to-cash-transaction,omitempty"`
 	WebhookConfig                  Relationship2 `json:"webhook-config,omitempty"`
+	SettledCashTransaction         Relationship  `json:"settled-cash-transaction,omitempty"`
+	ReversedCashTransaction        Relationship  `json:"reversed-cash-transaction,omitempty"`
+	Parent                         Relationship2 `json:"parent,omitempty"`
+	Refund                         Relationship2 `json:"refund,omitempty"`
 }

@@ -128,6 +128,7 @@ func CreateNewAccount(account *models.AccountForm) (*models.Account, error) {
 
 func GetAgreement(agreementId string) (*models.Agreement, error) {
 	apiUrl := fmt.Sprintf("%s/agreements/%s", _apiPrefix, agreementId)
+	color.Green("GetAgreement apiURL:%v", apiUrl)
 	req, err := http.NewRequest("GET", apiUrl, nil)
 	req.Header.Add("Authorization", _jwt)
 	client := &http.Client{}
@@ -154,9 +155,9 @@ func GetAgreementPreview(inputs *models.AgreementForm) (*models.Agreement, error
 	jsonData := new(bytes.Buffer)
 	json.NewEncoder(jsonData).Encode(inputs)
 
-	apiUrl := fmt.Sprintf("%s/agreement-previews", _apiPrefix)
+	apiURL := fmt.Sprintf("%s/agreement-previews", _apiPrefix)
 
-	req, err := http.NewRequest("POST", apiUrl, jsonData)
+	req, err := http.NewRequest("POST", apiURL, jsonData)
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Add("Authorization", _jwt)
 
@@ -170,7 +171,7 @@ func GetAgreementPreview(inputs *models.AgreementForm) (*models.Agreement, error
 	body, _ := ioutil.ReadAll(res.Body)
 
 	if res.StatusCode != http.StatusCreated {
-		return nil, errors.New(fmt.Sprintf("%s: %s", res.Status, string(body)))
+		return nil, fmt.Errorf("%s: %s", res.Status, string(body))
 	}
 
 	response := models.Agreement{}
@@ -186,18 +187,21 @@ func GetAgreementPreview(inputs *models.AgreementForm) (*models.Agreement, error
 }
 
 func SandboxAccountOpen(accountId string) (*models.AccountData, error) {
-	apiUrl := fmt.Sprintf("%s/accounts/%s/sandbox/open", _apiPrefix, accountId)
-	req, err := http.NewRequest("POST", apiUrl, nil)
+	apiURL := fmt.Sprintf("%s/accounts/%s/sandbox/open", _apiPrefix, accountId)
+	req, err := http.NewRequest("POST", apiURL, nil)
 	req.Header.Add("Authorization", _jwt)
 
 	client := &http.Client{}
 	res, err := client.Do(req)
 	if err != nil {
+		color.Red("SandboxAccountOpen: error:%v %v", apiURL, err)
 		return nil, err
 	}
 	defer res.Body.Close()
 
 	if res.StatusCode != http.StatusOK {
+		color.Red("SandboxAccountOpen: error:%v %v", apiURL, errors.New(res.Status))
+
 		return nil, errors.New(res.Status)
 	}
 	body, _ := ioutil.ReadAll(res.Body)

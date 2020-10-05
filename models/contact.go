@@ -46,20 +46,29 @@ type ContactData struct {
 
 type RelatedContactData struct {
 	Type               string      `json:"type"`
-	ContactType        string      `json:"contact-type,omitempty"`
-	DateOfBirth        string      `json:"date-of-birth"`
 	Email              string      `json:"email"`
 	Name               string      `json:"name"`
-	Sex                string      `json:"sex"`
-	Label              string      `json:"label"`
-	TaxIDNumber        string      `json:"tax-id-number"`
-	TaxCountry         string      `json:"tax-country"`
 	PrimaryAddress     Address     `json:"primary-address"`
 	PrimaryPhoneNumber PhoneNumber `json:"primary-phone-number"`
+	ContactType        string      `json:"contact-type,omitempty"`
+	RegionOfFormation  string      `json:"region-of-formation,omitempty"`
+	DateOfBirth        string      `json:"date-of-birth,omitempty"`
+	Sex                string      `json:"sex,omitempty"`
+	TaxCountry         string      `json:"tax-country"`
+	TaxIDNumber        string      `json:"tax-id-number"`
+	TaxState           string      `json:"tax-state"`
+	Label 			   string 	   `json:"label"`
 }
 
 type Contact struct {
 	Data ContactData `json:"data"`
+}
+
+type Contacts struct {
+	Data     []ContactData `json:"data"`
+	Included []AccountData `json:"included"`
+	Links    Links         `json:"links"`
+	Meta     Meta          `json:"meta"`
 }
 
 func NewNaturalPersonContact(accountId string) *Contact {

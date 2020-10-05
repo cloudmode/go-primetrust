@@ -44,16 +44,14 @@ func GetCashTransaction(transactionID string) (*models.CashTransaction, error) {
 	return &response, nil
 }
 
-func GetCashTransactions(accountID string, from, to time.Time) (*models.CashTransactionsResponse, error) {
-	filter := fmt.Sprintf("filter[created-at gte]=%s&filter[created-at lte]=%s",
-		from.Format(time.RFC3339), to.Format(time.RFC3339))
-	color.Blue("filter:%s", filter)
-	apiUrl := fmt.Sprintf("%s/cash-transactions?%s&page[number]=1&page[size]=100&include=account-cash-transfer-from,account-cash-transfer-to&sort=-created-at&account.id=%s",
+// GetCashTransactionsPage returns a single page of transactions using the USD filter
+func GetCashTransactionsPage(accountID string, number, size int64) (*models.CashTransactionsResponse, error) {
+	filter := "filter[currency-type eq]=USD"
+	apiURL := fmt.Sprintf("%s/cash-transactions?%s&page[number]=1&page[size]=20&include=account-cash-transfer-from,account-cash-transfer-to&sort=-created-at&account.id=%s",
 		_apiPrefix, url.PathEscape(filter), accountID)
+	color.Red("GetCashTransactionsPage:%v", apiURL)
 
-	//apiUrl = url.QueryEscape(apiUrl)
-
-	req, err := http.NewRequest("GET", apiUrl, nil)
+	req, err := http.NewRequest("GET", apiURL, nil)
 	req.Header.Add("Authorization", _jwt)
 
 	client := &http.Client{}
@@ -75,7 +73,43 @@ func GetCashTransactions(accountID string, from, to time.Time) (*models.CashTran
 	if err := json.Unmarshal(body, &transactions); err != nil {
 		return nil, errors.New("unmarshal error")
 	}
+	color.Red("GetCashTransactionsPage:%v", PrettyPrint(transactions))
+	return &transactions, nil
+}
 
+// GetCashTransactions returns all cash transactions between from and to
+func GetCashTransactions(accountID string, from, to time.Time) (*models.CashTransactionsResponse, error) {
+	filter := fmt.Sprintf("filter[created-at gte]=%s&filter[created-at lte]=%s",
+		from.Format(time.RFC3339), to.Format(time.RFC3339))
+	color.Blue("filter:%s", filter)
+	apiURL := fmt.Sprintf("%s/cash-transactions?%s&page[number]=1&page[size]=1000&include=account-cash-transfer-from,account-cash-transfer-to&sort=-created-at&account.id=%s",
+		_apiPrefix, url.PathEscape(filter), accountID)
+
+	//apiURL = url.QueryEscape(apiURL)
+
+	req, err := http.NewRequest("GET", apiURL, nil)
+	req.Header.Add("Authorization", _jwt)
+
+	client := &http.Client{}
+	res, err := client.Do(req)
+	if err != nil {
+		color.Red("error getting accountID:%s:%s", filter)
+		return nil, err
+	}
+	defer res.Body.Close()
+
+	if res.StatusCode != http.StatusOK {
+		color.Red("wetf:%v", res.Status)
+		return nil, errors.New(res.Status)
+	}
+	body, _ := ioutil.ReadAll(res.Body)
+	//color.Red("body:%s", body)
+
+	transactions := models.CashTransactionsResponse{}
+	if err := json.Unmarshal(body, &transactions); err != nil {
+		return nil, errors.New("unmarshal error")
+	}
+	color.Red("GetTransactions:%v", PrettyPrint(transactions))
 	return &transactions, nil
 }
 
@@ -85,6 +119,33 @@ func NewFundsTransfer(from, to, reference string, amount float64) *models.FundTr
 	data := models.FundTransferData{Type: "account-cash-transfers", Attributes: attrs}
 	ft := models.FundTransfer{Data: data}
 	return &ft
+}
+
+// GetFundsTransfer from funds-transfer-id
+func GetFundsTransfer(fundsTransferID string) (*models.FundsTransfer, error) {
+	apiUrl := fmt.Sprintf("%s/funds-transfers/%s", _apiPrefix, fundsTransferID)
+	req, err := http.NewRequest("GET", apiUrl, nil)
+	req.Header.Add("Authorization", _jwt)
+
+	client := &http.Client{}
+	res, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer res.Body.Close()
+
+	if res.StatusCode != http.StatusOK {
+		return nil, errors.New(res.Status)
+	}
+	body, _ := ioutil.ReadAll(res.Body)
+
+	response := models.FundsTransfer{}
+	if err := json.Unmarshal(body, &response); err != nil {
+		color.Red("GetFundsTransfer unmarshal error:%v", err)
+		return nil, errors.New("unmarshal error")
+	}
+
+	return &response, nil
 }
 
 // FundsTransfer ...

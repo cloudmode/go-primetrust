@@ -13,6 +13,7 @@ import (
 	"path"
 
 	"github.com/cloudmode/go-primetrust/models"
+	"github.com/fatih/color"
 	"github.com/globalsign/mgo"
 )
 
@@ -41,6 +42,7 @@ func UploadDocument(file *mgo.GridFile, fileHeader multipart.FileHeader, contact
 		"mime_type":   contentType,
 	}
 
+	color.Green("UploadDocument data:%v", PrettyPrint(data))
 	for key, val := range data {
 		_ = writer.WriteField(key, val.(string))
 	}
