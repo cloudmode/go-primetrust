@@ -47,8 +47,8 @@ func GetCashTransaction(transactionID string) (*models.CashTransaction, error) {
 // GetCashTransactionsPage returns a single page of transactions using the USD filter
 func GetCashTransactionsPage(accountID string, number, size int64) (*models.CashTransactionsResponse, error) {
 	filter := "filter[currency-type eq]=USD"
-	apiURL := fmt.Sprintf("%s/cash-transactions?%s&page[number]=1&page[size]=20&include=account-cash-transfer-from,account-cash-transfer-to&sort=-created-at&account.id=%s",
-		_apiPrefix, url.PathEscape(filter), accountID)
+	apiURL := fmt.Sprintf("%s/cash-transactions?%s&page[number]=%d&page[size]=%d&include=account-cash-transfer-from,account-cash-transfer-to&sort=-created-at&account.id=%s",
+		_apiPrefix, url.PathEscape(filter), number, size, accountID)
 	color.Red("GetCashTransactionsPage:%v", apiURL)
 
 	req, err := http.NewRequest("GET", apiURL, nil)
@@ -73,7 +73,7 @@ func GetCashTransactionsPage(accountID string, number, size int64) (*models.Cash
 	if err := json.Unmarshal(body, &transactions); err != nil {
 		return nil, errors.New("unmarshal error")
 	}
-	color.Red("GetCashTransactionsPage:%v", PrettyPrint(transactions))
+	//color.Red("GetCashTransactionsPage:%v", PrettyPrint(transactions.Data[0:size-1]))
 	return &transactions, nil
 }
 
@@ -109,7 +109,7 @@ func GetCashTransactions(accountID string, from, to time.Time) (*models.CashTran
 	if err := json.Unmarshal(body, &transactions); err != nil {
 		return nil, errors.New("unmarshal error")
 	}
-	color.Red("GetTransactions:%v", PrettyPrint(transactions))
+	//color.Red("GetTransactions:%v", PrettyPrint(transactions.Data[0:]))
 	return &transactions, nil
 }
 
