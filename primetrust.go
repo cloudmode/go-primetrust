@@ -30,8 +30,13 @@ type JWT struct {
 	Token string `json:"token`
 }
 
-func getJWT() string {
-	url := "https://sandbox.primetrust.com/auth/jwts"
+func getJWT(sandbox bool) string {
+	var url string
+	if sandbox {
+		url = "https://sandbox.primetrust.com/auth/jwts"
+	} else {
+		url = "https://api.primetrust.com/auth/jwts"
+	}
 	method := "POST"
 
 	client := &http.Client{
@@ -71,7 +76,7 @@ func Init(sandbox bool, login string, password string) {
 	}
 	_authHeader = fmt.Sprintf("Basic %s", basicAuth(login, password))
 	color.Blue("%s", _authHeader)
-	_jwt = getJWT()
+	_jwt = getJWT(sandbox)
 	color.Blue("%s", _jwt)
 
 	// periodically update JWT

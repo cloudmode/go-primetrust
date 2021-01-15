@@ -196,7 +196,7 @@ func FundsTransfer(from, to, amount, reference string) (*models.CashTransfer, er
 				if err := json.Unmarshal([]byte(raw.Raw), &response.FromCashData); err != nil {
 					color.Red("shit:%v", err)
 				}
-				color.Green("CashTotal:%v", PrettyPrint(response.FromCashData))
+				//color.Green("CashTotal:%v", PrettyPrint(response.FromCashData))
 			} else if t.String() == "cash-transactions" {
 				if err := json.Unmarshal([]byte(raw.Raw), &response.FromCashTransaction); err != nil {
 					color.Red("shit:%v", err)
@@ -215,7 +215,7 @@ func FundsTransfer(from, to, amount, reference string) (*models.CashTransfer, er
 		}
 
 	}
-	color.Red("FundsTransfer:response:%+v", PrettyPrint(response))
+	//color.Red("FundsTransfer:response:%+v", PrettyPrint(response))
 
 	return &response, nil
 }
