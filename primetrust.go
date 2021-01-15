@@ -85,7 +85,7 @@ func Init(sandbox bool, login string, password string) {
 		for {
 			select {
 			case <-jwtTicker.C:
-				_jwt = getJWT()
+				_jwt = getJWT(sandbox)
 			}
 		}
 	}()
